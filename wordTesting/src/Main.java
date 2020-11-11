@@ -15,6 +15,8 @@ public class Main {
         System.out.println(top10PopularPhrases(textInArray, 2));
         System.out.println(findAllNames(textInArray));
         System.out.printf("átlagos szószám mondatonként: %.3f%n", countAvgWordsInSentences(textInArray, semantics.getText()));
+        System.out.println("a szövegben a magánhangzók száma: " + countLetters(semantics.getText(), true));
+        System.out.println("a szövegben a mássalhangzók száma: " + countLetters(semantics.getText(), false));
 
     }
 
@@ -217,6 +219,36 @@ public class Main {
             }
         }
         return (sentencesNum > 0 ? (float)wordsNum / sentencesNum : -1);
+    }
+
+    public static int countLetters(String text, boolean isVowel) {
+        Character[] vowels = {'a', 'á', 'e', 'é', 'i', 'í', 'o', 'ó', 'ö', 'ő', 'u', 'ú', 'ü', 'ű'};
+        int counter = 0;
+
+        if (isVowel) {
+            for (int i = 0; i < text.length(); i++) {
+                for (int j = 0; j < vowels.length; j++) {
+                    if (text.charAt(i) == vowels[j]) {
+                        counter++;
+                        break;
+                    }
+                }
+            }
+        } else {
+            for (int i = 0; i < text.length(); i++) {
+                boolean isConsonant = true;
+                for (int j = 0; j < vowels.length; j++) {
+                    if (text.charAt(i) == vowels[j]) {
+                        isConsonant = false;
+                        break;
+                    }
+                }
+                if (isConsonant) {
+                    counter++;
+                }
+            }
+        }
+        return counter;
     }
 
 }
