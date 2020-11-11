@@ -181,12 +181,12 @@ public class Main {
 
     //Gyűjtsd ki egy szöveg 10 leggyakoribb nevét!
 
-    public static HashSet<String> findAllNames(ArrayList<String> stringArrayList) {
+    public static HashSet<String> findAllNames(ArrayList<String> stringArrayList) throws FileNotFoundException {
         HashSet<String> namesHashSet = new HashSet<>();
-        String[] names = {"Vicuska", "Gergő", "János", "Ferdinánd", "György"};
+        ArrayList<String> names = new ArrayList<>(readNamesFromFile());
         for (int i = 0; i < stringArrayList.size(); i++) {
-            for (int j = 0; j < names.length; j++) {
-                if (stringArrayList.get(i).equals(names[j])) {
+            for (int j = 0; j < names.size(); j++) {
+                if (stringArrayList.get(i).equals(names.get(j))) {
                     namesHashSet.add(stringArrayList.get(i));
                     break;
                 }
