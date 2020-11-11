@@ -4,7 +4,7 @@ import java.util.Scanner;
 
 public class Semantics {
 
-    private String text;
+    private String text = "";
 
     public Semantics(String filePath) throws FileNotFoundException {
         readFromFile(filePath);
@@ -20,4 +20,6 @@ public class Semantics {
     public String getText() {
         return text;
     }
+
+
 }
