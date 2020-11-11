@@ -1,5 +1,8 @@
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
 
 public class Main {
     public static void main(String[] args) throws FileNotFoundException {
@@ -7,7 +10,10 @@ public class Main {
 
         //System.out.println(semantics.getText());
         ArrayList<String> textInArray = separateTheText(semantics.getText());
+        getOutTheSpecialCharsFromTheText(textInArray);
         System.out.println(textInArray.toString());
+        System.out.println(findThe10MostPopularWord(textInArray));
+
     }
 
     public static ArrayList<String> separateTheText(String text) {
@@ -44,11 +50,57 @@ public class Main {
                 for (int j = 0; j < strings2.length; j++) {
                     stringArrayList.add(strings2[j]);
                 }
-            }
-            else{
+            } else if (strings[i].contains("-")) {
+                String[] strings2 = strings[i].split("-");
+                for (int j = 0; j < strings2.length; j++) {
+                    stringArrayList.add(strings2[j]);
+                }
+            } else {
                 stringArrayList.add(strings[i]);
             }
         }
         return stringArrayList;
+    }
+
+
+    public static void getOutTheSpecialCharsFromTheText(ArrayList<String> stringArrayList) {
+        for (int i = 0; i < stringArrayList.size(); i++) {
+            if (stringArrayList.get(i).length() > 1) {
+                if (stringArrayList.get(i).charAt(0) < 65) {
+                    stringArrayList.set(i, stringArrayList.get(i).substring(1));
+                }
+                if (stringArrayList.get(i).charAt(stringArrayList.get(i).length() - 1) < 65) {
+                    stringArrayList.set(i, stringArrayList.get(i).substring(0, stringArrayList.get(i).length() - 1));
+                }
+            }
+        }
+    }
+
+    public static ArrayList<String> findThe10MostPopularWord(ArrayList<String> abc){
+        HashMap<String, Integer> abcHashMap = new HashMap<>();
+        for (int i = 0; i < abc.size(); i++) {
+            abcHashMap.putIfAbsent(abc.get(i),0);
+            int x = abcHashMap.get(abc.get(i)).intValue();
+            abcHashMap.replace(abc.get(i), x+1);
+        }
+        int max = 0;
+        ArrayList<String> top10WordsList = new ArrayList<>();
+        for (Map.Entry<String, Integer> entry : abcHashMap.entrySet()){
+            if (entry.getValue() > max){
+                max = entry.getValue();
+                top10WordsList.add(entry.getKey());
+            }
+        }
+        for (int i = top10WordsList.size(); i <= 10 ; i++) {
+            int max2 = 0;
+            for (Map.Entry<String, Integer> entry : abcHashMap.entrySet()){
+                if (entry.getValue() > max2 && entry.getValue() < max){
+                    max2 = entry.getValue();
+                    top10WordsList.add(entry.getKey());
+                }
+                max = max2;
+            }
+        }
+        return top10WordsList;
     }
 }
