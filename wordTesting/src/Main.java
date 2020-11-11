@@ -3,8 +3,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-
 public class Main {
+
     public static void main(String[] args) throws FileNotFoundException {
         Semantics semantics = new Semantics("Files/Text1.txt");
 
@@ -50,11 +50,6 @@ public class Main {
                 for (int j = 0; j < strings2.length; j++) {
                     stringArrayList.add(strings2[j]);
                 }
-            } else if (strings[i].contains("-")) {
-                String[] strings2 = strings[i].split("-");
-                for (int j = 0; j < strings2.length; j++) {
-                    stringArrayList.add(strings2[j]);
-                }
             } else {
                 stringArrayList.add(strings[i]);
             }
@@ -76,6 +71,17 @@ public class Main {
         }
     }
 
+    public static boolean isExceptionWord(String word) {
+        String[] exceptionWords = {"a", "az", "és", "hogy", "s", "egy", "nem", "-", "is", "de", "meg", "csak", "sem", "azt",
+        "mint", "ezt", "el", "ez", "ha", "ő", "van", "még", "volt", "A"};
+        for (int i = 0; i < exceptionWords.length; i++) {
+            if (exceptionWords[i].equals(word)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public static ArrayList<String> findThe10MostPopularWord(ArrayList<String> abc){
         HashMap<String, Integer> abcHashMap = new HashMap<>();
         for (int i = 0; i < abc.size(); i++) {
@@ -83,24 +89,33 @@ public class Main {
             int x = abcHashMap.get(abc.get(i)).intValue();
             abcHashMap.replace(abc.get(i), x+1);
         }
-        int max = 0;
+
         ArrayList<String> top10WordsList = new ArrayList<>();
-        for (Map.Entry<String, Integer> entry : abcHashMap.entrySet()){
-            if (entry.getValue() > max){
+
+        int max = 0; // 68 -- 29
+        int max2 = 0; // 29
+        String maxStr = ""; // az
+        for (Map.Entry<String, Integer> entry : abcHashMap.entrySet()) {
+            if (entry.getValue() > max && !isExceptionWord(entry.getKey())) {
                 max = entry.getValue();
-                top10WordsList.add(entry.getKey());
+                maxStr = entry.getKey();
             }
         }
-        for (int i = top10WordsList.size(); i <= 10 ; i++) {
-            int max2 = 0;
-            for (Map.Entry<String, Integer> entry : abcHashMap.entrySet()){
-                if (entry.getValue() > max2 && entry.getValue() < max){
+
+        top10WordsList.add(maxStr);
+
+        while (top10WordsList.size() < 10) {
+            for (Map.Entry<String, Integer> entry : abcHashMap.entrySet()) {
+                if (entry.getValue() > max2 && entry.getValue() < max && !isExceptionWord(entry.getKey())) {
                     max2 = entry.getValue();
-                    top10WordsList.add(entry.getKey());
+                    maxStr = entry.getKey();
                 }
-                max = max2;
             }
+            top10WordsList.add(maxStr);
+            max = max2;
+            max2 = 0;
         }
+
         return top10WordsList;
     }
 }
