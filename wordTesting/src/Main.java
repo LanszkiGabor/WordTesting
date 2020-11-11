@@ -1,3 +1,4 @@
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.*;
 
@@ -194,6 +195,14 @@ public class Main {
         return namesHashSet;
     }
 
+    public static ArrayList<String> readNamesFromFile() throws FileNotFoundException{
+        Scanner fromFile = new Scanner(new File("Files/Names.txt"));
+        ArrayList<String> names = new ArrayList<>();
+        while (fromFile.hasNextLine()) {
+            names.add(fromFile.nextLine().trim());
+        }
+        return names;
+    }
 
 }
 
