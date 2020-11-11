@@ -18,6 +18,9 @@ public class Main {
         System.out.println("a szövegben a magánhangzók száma: " + countLetters(semantics.getText(), true));
         System.out.println("a szövegben a mássalhangzók száma: " + countLetters(semantics.getText(), false));
         System.out.printf("a magánhangzók aránya: %.2f", rateOfVowels(semantics.getText()));
+        System.out.println("%");
+        System.out.printf("a mássalhangzók aránya: %.2f", rateOfConsonants(semantics.getText()));
+        System.out.println("%");
 
 
     }
@@ -256,6 +259,12 @@ public class Main {
     public static float rateOfVowels(String text) {
         int vowels = countLetters(text, true);
         return (float)vowels / text.length() * 100f;
+
+    }
+
+    public static float rateOfConsonants(String text) {
+        int consonants = countLetters(text, false);
+        return (float)consonants / text.length() * 100f;
 
     }
 
