@@ -1,8 +1,5 @@
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.*;
 
 public class Main {
 
@@ -15,6 +12,7 @@ public class Main {
         System.out.println(textInArray.toString());
         System.out.println(findThe10MostPopularWord(textInArray));
         System.out.println(top10PopularPhrases(textInArray, 2));
+        System.out.println(findAllNames(textInArray));
 
     }
 
@@ -57,8 +55,8 @@ public class Main {
             }
         }
         Iterator iterator = stringArrayList.iterator();
-        while (iterator.hasNext()){
-            if (iterator.next().equals("-")){
+        while (iterator.hasNext()) {
+            if (iterator.next().equals("-")) {
                 iterator.remove();
             }
         }
@@ -141,7 +139,7 @@ public class Main {
             } else {
                 for (int j = i; j < number + i; j++) {
                     toAdd += abc.get(j);
-                    if (j < number + i -1) {
+                    if (j < number + i - 1) {
                         toAdd += " ";
                     }
                 }
@@ -180,10 +178,21 @@ public class Main {
         return top10WordsList;
     }
 
-   //Gyűjtsd ki egy szöveg 10 leggyakoribb nevét!
+    //Gyűjtsd ki egy szöveg 10 leggyakoribb nevét!
 
-    
-
+    public static HashSet<String> findAllNames(ArrayList<String> stringArrayList) {
+        HashSet<String> namesHashSet = new HashSet<>();
+        String[] names = {"Vicuska", "Gergő", "János", "Ferdinánd", "György"};
+        for (int i = 0; i < stringArrayList.size(); i++) {
+            for (int j = 0; j < names.length; j++) {
+                if (stringArrayList.get(i).equals(names[j])) {
+                    namesHashSet.add(stringArrayList.get(i));
+                    break;
+                }
+            }
+        }
+        return namesHashSet;
+    }
 
 
 }
