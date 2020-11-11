@@ -1,6 +1,7 @@
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 public class Main {
@@ -13,6 +14,7 @@ public class Main {
         getOutTheSpecialCharsFromTheText(textInArray);
         System.out.println(textInArray.toString());
         System.out.println(findThe10MostPopularWord(textInArray));
+        System.out.println(top10PopularPhrases(textInArray, 2));
 
     }
 
@@ -54,6 +56,12 @@ public class Main {
                 stringArrayList.add(strings[i]);
             }
         }
+        Iterator iterator = stringArrayList.iterator();
+        while (iterator.hasNext()){
+            if (iterator.next().equals("-")){
+                iterator.remove();
+            }
+        }
         return stringArrayList;
     }
 
@@ -71,9 +79,11 @@ public class Main {
         }
     }
 
+    // Gyűjtsd ki egy szöveg 10 leggyakoribb szavát!
+
     public static boolean isExceptionWord(String word) {
         String[] exceptionWords = {"a", "az", "és", "hogy", "s", "egy", "nem", "-", "is", "de", "meg", "csak", "sem", "azt",
-        "mint", "ezt", "el", "ez", "ha", "ő", "van", "még", "volt", "A"};
+                "mint", "ezt", "el", "ez", "ha", "ő", "van", "még", "volt", "A"};
         for (int i = 0; i < exceptionWords.length; i++) {
             if (exceptionWords[i].equals(word)) {
                 return true;
@@ -82,12 +92,12 @@ public class Main {
         return false;
     }
 
-    public static ArrayList<String> findThe10MostPopularWord(ArrayList<String> abc){
+    public static ArrayList<String> findThe10MostPopularWord(ArrayList<String> abc) {
         HashMap<String, Integer> abcHashMap = new HashMap<>();
         for (int i = 0; i < abc.size(); i++) {
-            abcHashMap.putIfAbsent(abc.get(i),0);
+            abcHashMap.putIfAbsent(abc.get(i), 0);
             int x = abcHashMap.get(abc.get(i)).intValue();
-            abcHashMap.replace(abc.get(i), x+1);
+            abcHashMap.replace(abc.get(i), x + 1);
         }
 
         ArrayList<String> top10WordsList = new ArrayList<>();
@@ -118,4 +128,64 @@ public class Main {
 
         return top10WordsList;
     }
+
+    // Gyűjtsd ki egy szöveg 10 leggyakoribb 2-3-4 szavas szófordulatát!
+
+
+    public static ArrayList<String> top10PopularPhrases(ArrayList<String> abc, int number) {
+        HashMap<String, Integer> abcHashMap = new HashMap<>();
+        for (int i = 0; i < abc.size(); i++) {
+            String toAdd = "";
+            if (i == abc.size() - number - 1) {
+                break;
+            } else {
+                for (int j = i; j < number + i; j++) {
+                    toAdd += abc.get(j);
+                    if (j < number + i -1) {
+                        toAdd += " ";
+                    }
+                }
+                abcHashMap.putIfAbsent(toAdd, 0);
+                int x = abcHashMap.get(toAdd).intValue();
+                abcHashMap.replace(toAdd, x + 1);
+            }
+        }
+
+        ArrayList<String> top10WordsList = new ArrayList<>();
+
+        int max = 0;
+        int max2 = 0;
+        String maxStr = "";
+        for (Map.Entry<String, Integer> entry : abcHashMap.entrySet()) {
+            if (entry.getValue() > max && !isExceptionWord(entry.getKey())) {
+                max = entry.getValue();
+                maxStr = entry.getKey();
+            }
+        }
+
+        top10WordsList.add(maxStr);
+
+        while (top10WordsList.size() < 10) {
+            for (Map.Entry<String, Integer> entry : abcHashMap.entrySet()) {
+                if (entry.getValue() > max2 && entry.getValue() < max && !isExceptionWord(entry.getKey())) {
+                    max2 = entry.getValue();
+                    maxStr = entry.getKey();
+                }
+            }
+            top10WordsList.add(maxStr);
+            max = max2;
+            max2 = 0;
+        }
+
+        return top10WordsList;
+    }
+
+   //Gyűjtsd ki egy szöveg 10 leggyakoribb nevét!
+
+    
+
+
+
 }
+
+
