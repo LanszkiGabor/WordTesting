@@ -17,6 +17,8 @@ public class Main {
         System.out.printf("átlagos szószám mondatonként: %.3f%n", countAvgWordsInSentences(textInArray, semantics.getText()));
         System.out.println("a szövegben a magánhangzók száma: " + countLetters(semantics.getText(), true));
         System.out.println("a szövegben a mássalhangzók száma: " + countLetters(semantics.getText(), false));
+        System.out.printf("a magánhangzók aránya: %.2f", rateOfVowels(semantics.getText()));
+
 
     }
 
@@ -249,6 +251,12 @@ public class Main {
             }
         }
         return counter;
+    }
+
+    public static float rateOfVowels(String text) {
+        int vowels = countLetters(text, true);
+        return (float)vowels / text.length() * 100f;
+
     }
 
 }
