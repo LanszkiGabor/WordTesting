@@ -14,6 +14,7 @@ public class Main {
         System.out.println(findThe10MostPopularWord(textInArray));
         System.out.println(top10PopularPhrases(textInArray, 2));
         System.out.println(findAllNames(textInArray));
+        System.out.printf("átlagos szószám mondatonként: %.3f%n", countAvgWordsInSentences(textInArray, semantics.getText()));
 
     }
 
@@ -202,6 +203,20 @@ public class Main {
             names.add(fromFile.nextLine().trim());
         }
         return names;
+    }
+
+    public static float countAvgWordsInSentences(ArrayList<String> abc, String text) {
+        int wordsNum = abc.size();
+        int sentencesNum = 0;
+        for (int i = 0; i < text.length(); i++) {
+            if (text.charAt(i) == '!' || text.charAt(i) == '?') {
+                sentencesNum++;
+            }
+            if (i < text.length()-1 && text.charAt(i) == '.' && text.charAt(i+1) != '.') {
+                sentencesNum++;
+            }
+        }
+        return (sentencesNum > 0 ? (float)wordsNum / sentencesNum : -1);
     }
 
 }
