@@ -307,8 +307,9 @@ public class Semantics {
         return (float)letters / text.length() * 100f;
     }
 
-    public void printInfo (){
+    public void printInfo () throws FileNotFoundException {
         System.out.println("A mondatok száma a szövegben: " + countSentences(text));
+        System.out.println("10 leggyakoribb név a szövegben: " + findAllNames(textInArray));
         System.out.println("A betűk száma a szövegben (speciális karakterek nélkül): " + countLetters(text,""));
         System.out.println("Átlagos szavak száma egy mondatban: " + countAvgWordsInSentences(textInArray,text));
         System.out.println("10 leggyakoribb szó a szövegben:  " + findThe10MostPopularWord(textInArray,10));
