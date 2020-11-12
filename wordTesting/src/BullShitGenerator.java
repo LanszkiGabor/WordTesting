@@ -32,12 +32,21 @@ public class BullShitGenerator extends Semantics {
 
     public void setGeneratedTextFromPhrases(){
         generatedText = "";
-        HashSet<String> abc = top10PopularPhrases(semantics.getTextInArray(),3);
+        HashSet<String> abc = top10PopularPhrases(semantics.getTextInArray(),2);
         ArrayList<String> stringArrayList = new ArrayList<>(abc);
 
         for (int i = 0; i < 5; i++) {
             generatedText += stringArrayList.get((int)(Math.random()*abc.size())) + " ";
         }
+    }
+    @Override
+    public void printInfo (){
+        System.out.println("Generáljon egy random mondatot  a szöveg leggyakoribb szavaziból:");
+        setGeneratedTextFromWords();
+        System.out.println(generatedText);
+        System.out.println("Generáljon a leggyakoribb szóösszetételekből egy mondaatot:" );
+        setGeneratedTextFromPhrases();
+        System.out.println(generatedText);
     }
 
 

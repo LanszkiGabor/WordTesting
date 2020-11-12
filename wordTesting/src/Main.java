@@ -25,6 +25,8 @@ public class Main {
             deleteUserTextFile();
         } else {
             BullShitGenerator bullShitGenerator = new BullShitGenerator("Files/UserText.txt");
+            bullShitGenerator.printInfo();
+            deleteUserTextFile();
         }
 
     }
