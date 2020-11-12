@@ -11,15 +11,17 @@ public class Semantics {
     }
 
     public Semantics(String filePath) throws FileNotFoundException {
-        readFromFile(filePath);
+        text = readFromFile(filePath);
         separateTheText();
     }
 
-    public void readFromFile(String filePath) throws FileNotFoundException {
+    public String readFromFile(String filePath) throws FileNotFoundException {
         Scanner scanner = new Scanner(new File(filePath));
+        String string = "";
         while (scanner.hasNextLine()){
-            text += scanner.nextLine();
+            string += scanner.nextLine();
         }
+        return string;
     }
 
     public String getText() {
@@ -122,7 +124,9 @@ public class Semantics {
         return false;
     }
 
-    public ArrayList<String> findThe10MostPopularWord(ArrayList<String> abc) {
+    // 10 leggyakoribb szót
+
+    public HashSet<String> findThe10MostPopularWord(ArrayList<String> abc, int number) {
         HashMap<String, Integer> abcHashMap = new HashMap<>();
         for (int i = 0; i < abc.size(); i++) {
             abcHashMap.putIfAbsent(abc.get(i), 0);
@@ -130,7 +134,7 @@ public class Semantics {
             abcHashMap.replace(abc.get(i), x + 1);
         }
 
-        ArrayList<String> top10WordsList = new ArrayList<>();
+       ArrayList<String> top10WordsList = new ArrayList<>();
 
         int max = 0;
         int max2 = 0;
@@ -144,7 +148,7 @@ public class Semantics {
 
         top10WordsList.add(maxStr);
 
-        while (top10WordsList.size() < 10) {
+        while (top10WordsList.size() < number) {
             for (Map.Entry<String, Integer> entry : abcHashMap.entrySet()) {
                 if (entry.getValue() > max2 && entry.getValue() < max && !isExceptionWord(entry.getKey())) {
                     max2 = entry.getValue();
@@ -156,7 +160,8 @@ public class Semantics {
             max2 = 0;
         }
 
-        return top10WordsList;
+        HashSet<String> topWordsHashSet = new HashSet<>(top10WordsList);
+        return topWordsHashSet;
     }
 
     public void getOutTheSpecialCharsFromTheText(ArrayList<String> stringArrayList) {
@@ -175,7 +180,7 @@ public class Semantics {
     // Gyűjtsd ki egy szöveg 10 leggyakoribb 2-3-4 szavas szófordulatát!
 
 
-    public ArrayList<String> top10PopularPhrases(ArrayList<String> abc, int number) {
+    public HashSet<String> top10PopularPhrases(ArrayList<String> abc, int number) {
         HashMap<String, Integer> abcHashMap = new HashMap<>();
         for (int i = 0; i < abc.size(); i++) {
             String toAdd = "";
@@ -219,8 +224,8 @@ public class Semantics {
             max = max2;
             max2 = 0;
         }
-
-        return top10WordsList;
+        HashSet<String> top10Phrases = new HashSet<>(top10WordsList);
+        return top10Phrases;
     }
 
     //Gyűjtsd ki egy szöveg 10 leggyakoribb nevét!
@@ -300,6 +305,16 @@ public class Semantics {
     public float rateOfWantedLetters(String text, String keyword) {
         int letters = countLetters(text, keyword);
         return (float)letters / text.length() * 100f;
+    }
+
+    public void printInfo (){
+        System.out.println("A mondatok száma a szövegben: " + countSentences(text));
+        System.out.println("A betűk száma a szövegben (speciális karakterek nélkül): " + countLetters(text,""));
+        System.out.println("Átlagos szavak száma egy mondatban: " + countAvgWordsInSentences(textInArray,text));
+        System.out.println("10 leggyakoribb szó a szövegben:  " + findThe10MostPopularWord(textInArray,10));
+        System.out.println("10 leggyakoribb 3 szóból álló szóösszetétel a szövegben: " + top10PopularPhrases(textInArray,3));
+        System.out.println("Mássalhangzók aránya a szövegben: " + rateOfWantedLetters(text, "consonants"));
+        System.out.println("Magánhangzók a szövegben: " + rateOfWantedLetters(text, "vowels"));
     }
 
 }
