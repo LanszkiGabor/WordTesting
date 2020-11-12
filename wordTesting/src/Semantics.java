@@ -113,7 +113,7 @@ public class Semantics {
 
     private boolean isExceptionWord(String word) {
         String[] exceptionWords = {"a", "az", "és", "hogy", "s", "egy", "nem", "-", "is", "de", "meg", "csak", "sem", "azt",
-                "mint", "ezt", "el", "ez", "ha", "ő", "van", "még", "volt", "A"};
+                "mint", "ezt", "el", "ez", "ha", "ő", "van", "még", "volt"};
         for (int i = 0; i < exceptionWords.length; i++) {
             if (exceptionWords[i].equals(word)) {
                 return true;

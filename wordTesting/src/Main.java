@@ -15,8 +15,14 @@ public class Main {
         System.out.println(textInArray.toString());
         System.out.println(findThe10MostPopularWord(textInArray));
         System.out.println(top10PopularPhrases(textInArray, 2));
-        System.out.println(findAllNames(textInArray));
+
          */
+        System.out.println("nevek: " + findAllNames(semantics.getTextInArray()));
+        System.out.println(semantics.getTextInArray().size());
+        System.out.println(readNamesFromFile().size());
+        System.out.println(readNamesFromFile().get(0));
+        System.out.println(semantics.getTextInArray().get(0));
+
         System.out.println("mondatok összesen: " + countSentences(semantics.getText()));
         System.out.printf("átlagos szószám mondatonként: %.3f%n", countAvgWordsInSentences(semantics.getTextInArray(), semantics.getText()));
 
@@ -151,7 +157,7 @@ public class Main {
         for (int i = 0; i < stringArrayList.size(); i++) {
             for (int j = 0; j < names.size(); j++) {
                 if (stringArrayList.get(i).equals(names.get(j))) {
-                    namesHashSet.add(stringArrayList.get(i));
+                    namesHashSet.add(stringArrayList.get(i).toUpperCase());
                     break;
                 }
             }
@@ -163,7 +169,7 @@ public class Main {
         Scanner fromFile = new Scanner(new File("Files/Names.txt"));
         ArrayList<String> names = new ArrayList<>();
         while (fromFile.hasNextLine()) {
-            names.add(fromFile.nextLine().trim());
+            names.add(fromFile.nextLine().trim().toLowerCase());
         }
         return names;
     }
