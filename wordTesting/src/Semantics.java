@@ -313,8 +313,10 @@ public class Semantics {
         System.out.println("Átlagos szavak száma egy mondatban: " + countAvgWordsInSentences(textInArray,text));
         System.out.println("10 leggyakoribb szó a szövegben:  " + findThe10MostPopularWord(textInArray,10));
         System.out.println("10 leggyakoribb 3 szóból álló szóösszetétel a szövegben: " + top10PopularPhrases(textInArray,3));
-        System.out.println("Mássalhangzók aránya a szövegben: " + rateOfWantedLetters(text, "consonants"));
-        System.out.println("Magánhangzók a szövegben: " + rateOfWantedLetters(text, "vowels"));
+        System.out.printf("Mássalhangzók aránya a szövegben: %.2f", rateOfWantedLetters(text, "consonants"));
+        System.out.println("%");
+        System.out.printf("Magánhangzók a szövegben: %.2f", rateOfWantedLetters(text, "vowels"));
+        System.out.println("%");
     }
 
 }
