@@ -7,71 +7,27 @@ public class Main {
     public static void main(String[] args) throws FileNotFoundException {
         Semantics semantics = new Semantics("Files/Text1.txt");
 
-        //System.out.println(semantics.getText());
-        ArrayList<String> textInArray = separateTheText(semantics.getText());
+        System.out.println(semantics.getText());
+        System.out.println(semantics.getTextInArray());
+        System.out.println(semantics.findThe10MostPopularWord(semantics.getTextInArray()));
+        /*
         getOutTheSpecialCharsFromTheText(textInArray);
         System.out.println(textInArray.toString());
         System.out.println(findThe10MostPopularWord(textInArray));
         System.out.println(top10PopularPhrases(textInArray, 2));
         System.out.println(findAllNames(textInArray));
-        System.out.printf("átlagos szószám mondatonként: %.3f%n", countAvgWordsInSentences(textInArray, semantics.getText()));
-        System.out.println("a szövegben a magánhangzók száma: " + countLetters(semantics.getText(), true));
-        System.out.println("a szövegben a mássalhangzók száma: " + countLetters(semantics.getText(), false));
-        System.out.printf("a magánhangzók aránya: %.2f", rateOfVowels(semantics.getText()));
-        System.out.println("%");
-        System.out.printf("a mássalhangzók aránya: %.2f", rateOfConsonants(semantics.getText()));
-        System.out.println("%");
+         */
+        System.out.println("mondatok összesen: " + countSentences(semantics.getText()));
+        System.out.printf("átlagos szószám mondatonként: %.3f%n", countAvgWordsInSentences(semantics.getTextInArray(), semantics.getText()));
 
+        System.out.println("a szövegben a magánhangzók száma: " + countLetters(semantics.getText(), "vowels"));
+        System.out.println("a szövegben a mássalhangzók száma: " + countLetters(semantics.getText(), "consonants"));
+        System.out.printf("a magánhangzók aránya: %.2f", rateOfWantedLetters(semantics.getText(), "vowels"));
+        System.out.println("%");
+        System.out.printf("a mássalhangzók aránya: %.2f", rateOfWantedLetters(semantics.getText(), "consonants"));
+        System.out.println("%");
 
     }
-
-    public static ArrayList<String> separateTheText(String text) {
-        String[] strings = text.split(" ");
-        ArrayList<String> stringArrayList = new ArrayList<>();
-        for (int i = 0; i < strings.length; i++) {
-            if (strings[i].contains(".")) {
-                String[] strings2 = strings[i].split(".");
-                for (int j = 0; j < strings2.length; j++) {
-                    stringArrayList.add(strings2[j]);
-                }
-            } else if (strings[i].contains(",")) {
-                String[] strings2 = strings[i].split(",");
-                for (int j = 0; j < strings2.length; j++) {
-                    stringArrayList.add(strings2[j]);
-                }
-            } else if (strings[i].contains("?")) {
-                String[] strings2 = strings[i].split("\\?");
-                for (int j = 0; j < strings2.length; j++) {
-                    stringArrayList.add(strings2[j]);
-                }
-            } else if (strings[i].contains("!")) {
-                String[] strings2 = strings[i].split("!");
-                for (int j = 0; j < strings2.length; j++) {
-                    stringArrayList.add(strings2[j]);
-                }
-            } else if (strings[i].contains(":")) {
-                String[] strings2 = strings[i].split(":");
-                for (int j = 0; j < strings2.length; j++) {
-                    stringArrayList.add(strings2[j]);
-                }
-            } else if (strings[i].contains("\"")) {
-                String[] strings2 = strings[i].split("\"");
-                for (int j = 0; j < strings2.length; j++) {
-                    stringArrayList.add(strings2[j]);
-                }
-            } else {
-                stringArrayList.add(strings[i]);
-            }
-        }
-        Iterator iterator = stringArrayList.iterator();
-        while (iterator.hasNext()) {
-            if (iterator.next().equals("-")) {
-                iterator.remove();
-            }
-        }
-        return stringArrayList;
-    }
-
 
     public static void getOutTheSpecialCharsFromTheText(ArrayList<String> stringArrayList) {
         for (int i = 0; i < stringArrayList.size(); i++) {
@@ -212,60 +168,58 @@ public class Main {
         return names;
     }
 
-    public static float countAvgWordsInSentences(ArrayList<String> abc, String text) {
-        int wordsNum = abc.size();
+    public static int countSentences(String text) {
         int sentencesNum = 0;
         for (int i = 0; i < text.length(); i++) {
             if (text.charAt(i) == '!' || text.charAt(i) == '?') {
                 sentencesNum++;
             }
-            if (i < text.length()-1 && text.charAt(i) == '.' && text.charAt(i+1) != '.') {
+            if (text.charAt(i) == '.' && text.charAt(i - 1) != '.') {
                 sentencesNum++;
             }
         }
-        return (sentencesNum > 0 ? (float)wordsNum / sentencesNum : -1);
+        return sentencesNum;
     }
 
-    public static int countLetters(String text, boolean isVowel) {
-        Character[] vowels = {'a', 'á', 'e', 'é', 'i', 'í', 'o', 'ó', 'ö', 'ő', 'u', 'ú', 'ü', 'ű'};
-        int counter = 0;
+    public static float countAvgWordsInSentences(ArrayList<String> abc, String text) {
+        int wordsNum = abc.size();
+        int sentencesNum = countSentences(text);
+        return (sentencesNum > 0 ? (float)wordsNum / sentencesNum : abc.size());
+    }
 
-        if (isVowel) {
-            for (int i = 0; i < text.length(); i++) {
-                for (int j = 0; j < vowels.length; j++) {
-                    if (text.charAt(i) == vowels[j]) {
-                        counter++;
-                        break;
-                    }
+    public static int countLetters(String text, String keyWord) {
+        Character[] vowels = {'a', 'á', 'e', 'é', 'i', 'í', 'o', 'ó', 'ö', 'ő', 'u', 'ú', 'ü', 'ű'};
+        int countVowels = 0;
+        int countConsonants = 0;
+
+        for (int i = 0; i < text.length(); i++) {
+            boolean isConsonant = true;
+            for (int j = 0; j < vowels.length; j++) {
+                if (text.charAt(i) == vowels[j]) {
+                    isConsonant = false;
+                    break;
                 }
             }
-        } else {
-            for (int i = 0; i < text.length(); i++) {
-                boolean isConsonant = true;
-                for (int j = 0; j < vowels.length; j++) {
-                    if (text.charAt(i) == vowels[j]) {
-                        isConsonant = false;
-                        break;
-                    }
-                }
-                if (isConsonant) {
-                    counter++;
-                }
+            if (isConsonant) {
+                countConsonants++;
+            } else {
+                countVowels++;
             }
         }
-        return counter;
+
+        if (keyWord.equals("vowels")) {
+            return countVowels;
+        } else if (keyWord.equals("consonants")) {
+            return countConsonants;
+        } else {
+            return countVowels + countConsonants;
+        }
+
     }
 
-    public static float rateOfVowels(String text) {
-        int vowels = countLetters(text, true);
-        return (float)vowels / text.length() * 100f;
-
-    }
-
-    public static float rateOfConsonants(String text) {
-        int consonants = countLetters(text, false);
-        return (float)consonants / text.length() * 100f;
-
+    public static float rateOfWantedLetters(String text, String keyword) {
+        int letters = countLetters(text, keyword);
+        return (float)letters / text.length() * 100f;
     }
 
 }
